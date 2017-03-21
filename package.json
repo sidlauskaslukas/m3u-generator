@@ -1,0 +1,17 @@
+{
+  "name": "m3u-generator",
+  "version": "1.0.0",
+  "description": "Generates the playlist from the audio files in the directory you execute this script.",
+  "main": "m3u-generator.js",
+  "dependencies": {
+    "audio-extensions": "0.0.0",
+    "m3u": "^0.0.2",
+    "writer": "^1.0.0"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "m3ugen": "m3u-generator.js"
+  },
+  "author": "Lukas Šidlauskas",
+  "license": "MIT"
+}
