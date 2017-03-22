@@ -26,5 +26,4 @@ fs.readdir(path, function(err, files) {
 		}
 		console.log('Playlist file was successfuly generated!')
 	});
-
 });
