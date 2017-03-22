@@ -1,10 +1,10 @@
 #! /usr/bin/env node
 
 var fs = require('fs');
-var dirname = require('path').basename(__dirname);
 var writer = require('m3u').extendedWriter();
 var audioExtensions = require('audio-extensions');
 var path = process.cwd();
+var dirname = path.match(/([^\/]*)\/*$/)[1];
 
 if(!fs.existsSync(path)) return;
 
