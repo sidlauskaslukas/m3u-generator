@@ -26,7 +26,7 @@ function readFiles(files, onSuccess, onError) {
 	var writeFile = false;
 
 	files.forEach(function(file) {
-		var ext = file.split('.')[1];
+		var ext = file.split(/[. ]+/).pop();
 
 		if(audioExtensions.indexOf(ext) !== -1) {
 			writeFile = true;
