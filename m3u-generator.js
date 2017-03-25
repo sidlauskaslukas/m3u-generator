@@ -2,12 +2,12 @@
 
 var fs = require('fs');
 var path = require('path');
-var recursive = require('recursive-readdir');
-var writer = require('m3u').extendedWriter();
+var readdir = require('recursive-readdir');
+var writer = require('m3u');
 var audioExtensions = require('audio-extensions');
 var currentDir = process.cwd();
 
-recursive(currentDir, function(err, files) {
+readdir(currentDir, function(err, files) {
 	if(err) {
 		if(err.code === 'ENOENT') {
 			console.log('This folder does not exist.');
@@ -16,8 +16,8 @@ recursive(currentDir, function(err, files) {
 			throw err;
 		}
 	} else {
-		readFiles(files, function() {
-			createPlaylistFile();
+		readFiles(files, function(audioFiles) {
+			createPlaylistFile(audioFiles);
 		}, function() {
 			console.log('There are no audio files in this folder!');
 		});
@@ -25,31 +25,39 @@ recursive(currentDir, function(err, files) {
 });
 
 function readFiles(files, onSuccess, onError) {
-	var isAudio = false;
+	var audioFiles = filterFiles(files);
 
-	files.sort().forEach(function(file) {
-		var ext = file.split(/[. ]+/).pop();
-
-		if(audioExtensions.indexOf(ext) !== -1) {
-			isAudio = true;
-			writeFile(file);
-		}
-	});
-
-	isAudio ? onSuccess() : onError();
+	audioFiles.length ? onSuccess(audioFiles) : onError();
 }
 
-function writeFile(file) {
+function filterFiles(files) {
+	var filtered = [];
+
+	files.forEach(function(file) {
+		var ext = file.split(/[. ]+/).pop();
+
+		if(audioExtensions.indexOf(ext) !== -1) filtered.push(file);
+	});
+
+	return filtered;
+}
+
+function writeFile(playlist, file) {
 	var relativePath = file.split(currentDir + path.sep)[1];
 	var fileName = path.parse(file).name;
 
-	writer.file(relativePath, 0, fileName);
+	playlist.file(relativePath, 0, fileName);
 }
 
-function createPlaylistFile() {
+function createPlaylistFile(audioFiles) {
+	var playlist = writer.extendedWriter();
 	var playlistName = path.parse(currentDir).name;
 
-	fs.writeFile(playlistName + '.m3u', writer.toString(), function(err) {
+	audioFiles.forEach(function(file) {
+		writeFile(playlist, file);
+	});
+
+	fs.writeFile(playlistName + '.m3u', playlist.toString(), function(err) {
 		if(err) {
 			return console.log(err);
 		}
