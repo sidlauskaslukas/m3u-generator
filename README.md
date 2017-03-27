@@ -10,10 +10,6 @@ Generates the M3U playlist file from the audio files in the directory you run `m
 
 Run `m3ugen` in a terminal from the directory with the audio files and M3U file will be generated.
 
-## Todo
-
-* Read the audio files recursively
-
 ## License
 
 m3u-generator is licensed under the MIT license.

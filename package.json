@@ -1,6 +1,6 @@
 {
   "name": "m3u-generator",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Generates the M3U playlist file from the audio files in the directory you execute this script.",
   "main": "m3u-generator.js",
   "dependencies": {
