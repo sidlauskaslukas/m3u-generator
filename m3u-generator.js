@@ -2,11 +2,12 @@
 
 var fs = require('fs');
 var path = require('path');
+var recursive = require('recursive-readdir');
 var writer = require('m3u').extendedWriter();
 var audioExtensions = require('audio-extensions');
 var currentDir = process.cwd();
 
-fs.readdir(currentDir, function(err, files) {
+recursive(currentDir, function(err, files) {
 	if(err) {
 		if(err.code === 'ENOENT') {
 			console.log('This folder does not exist.');
@@ -24,18 +25,25 @@ fs.readdir(currentDir, function(err, files) {
 });
 
 function readFiles(files, onSuccess, onError) {
-	var writeFile = false;
+	var isAudio = false;
 
 	files.sort().forEach(function(file) {
 		var ext = file.split(/[. ]+/).pop();
 
 		if(audioExtensions.indexOf(ext) !== -1) {
-			writeFile = true;
-			writer.file(file, 0, file);
+			isAudio = true;
+			writeFile(file);
 		}
 	});
 
-	writeFile ? onSuccess() : onError();
+	isAudio ? onSuccess() : onError();
+}
+
+function writeFile(file) {
+	var relativePath = file.split(currentDir + path.sep)[1];
+	var fileName = path.parse(file).name;
+
+	writer.file(relativePath, 0, fileName);
 }
 
 function createPlaylistFile() {
