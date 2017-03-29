@@ -1,8 +1,12 @@
 {
   "name": "m3u-generator",
-  "version": "1.0.7",
-  "description": "Generates the M3U playlist file from the audio files in the directory you execute this script.",
+  "version": "1.0.8",
+  "description": "Generates the M3U playlist file from the audio files in the directory you run m3ugen from",
   "main": "m3u-generator.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sidlauskaslukas/m3u-generator"
+  },
   "dependencies": {
     "audio-extensions": "0.0.0",
     "m3u": "^0.0.2",
